@@ -58,8 +58,22 @@ class ExampleController extends Controller
             throw new BadInputException('Example description missing');
         }
 
+        $this->model->set([
+            'code' => $request->request->get('code'),
+            'description' => $request->request->get('description')
+        ]);
+
+        $example = $this->model->save();
+
         return $this->view->get(
-            $this->model->create(now(), $code, $description)
+            $example
         );
+    }
+
+    public function getExample(Request $request)
+    {
+        $id = (int) $request->attributes->get('id');
+
+        return $this->view->get($id);
     }
 }

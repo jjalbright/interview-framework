@@ -11,6 +11,8 @@ use Mini\Model\Model;
  */
 class ExampleModel extends Model
 {
+    protected $data;
+
     /**
      * Get example data by ID.
      *
@@ -19,6 +21,20 @@ class ExampleModel extends Model
      * @return array example data
      */
     public function get(int $id): array
+    {
+        if(!empty($this->data))   {
+            return $this->data;
+        } else {
+            return $this->getQuery($id);
+        }
+    }
+
+    public function set($data): array
+    {
+        return $this->data = $data;
+    }
+
+    public function getQuery(int $id): array
     {
         $sql = '
             SELECT
@@ -31,11 +47,11 @@ class ExampleModel extends Model
             WHERE
                 example_id = ?';
 
-        return $this->db->select([
+        return $this->set($this->db->select([
             'title'  => 'Get example data',
             'sql'    => $sql,
             'inputs' => [$id]
-        ]);
+        ]));
     }
 
     /**
@@ -73,5 +89,10 @@ class ExampleModel extends Model
         $this->db->validateAffected();
 
         return $id;
+    }
+
+    public function save()
+    {
+        return $this->create(now(), $this->data['code'], $this->data['description']);
     }
 }

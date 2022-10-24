@@ -7,5 +7,6 @@ declare(strict_types = 1);
  */
 return [
     ['POST', '/example/create', ['Example\Controller\ExampleController', 'createExample']],
-    ['GET', '/', ['Example\Controller\HomeController', 'index']]
+    ['GET', '/', ['Example\Controller\HomeController', 'index']],
+    ['GET', '/example/{id}', ['Example\Controller\ExampleController', 'getExample']]
 ];
